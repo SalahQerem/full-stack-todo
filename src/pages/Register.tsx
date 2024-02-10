@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { AxiosError } from "axios";
 import { IErrorResponse } from "../interfaces";
+import { Link, useNavigate } from "react-router-dom";
 
 interface IFormInput {
   username: string;
@@ -19,6 +20,7 @@ interface IFormInput {
 
 const Register = () => {
   const [isloading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,21 +34,25 @@ const Register = () => {
       setLoading(true);
       const { status } = await axiosInstance.post("/auth/local/register", data);
       if (status == 200) {
-        toast.success("You will navigate to ligin page after 4 seconds!", {
+        toast.success("You will navigate to login page after 2 seconds!", {
           position: "top-left",
-          duration: 4000,
+          duration: 1500,
           style: {
             backgroundColor: "black",
             color: "white",
             width: "fit-content",
           },
         });
+
+        setTimeout(() => {
+            navigate('/login');
+        }, 2000);
       }
     } catch (err) {
       const errorObj = err as AxiosError<IErrorResponse>;
       toast.error(`${errorObj.response?.data.error.message}`, {
         position: "top-left",
-        duration: 4000,
+        duration: 1500,
       });
     } finally {
       setLoading(false);
@@ -75,6 +81,10 @@ const Register = () => {
         <Button isLoading={isloading} fullWidth>
           Register
         </Button>
+        <div className="flex items-center justify-center space-x-2">
+            <p className="font-semibold text-gray-500">Have an account ?</p>
+            <Link to='/login' className="font-semibold text-indigo-600 underline">Login</Link>
+        </div>
       </form>
     </div>
   );

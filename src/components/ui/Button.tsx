@@ -8,9 +8,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         // ** FILLED
-        default: "bg-slate-900 dark:bg-indigo-600 dark:text-white dark:hover:bg-indigo-700",
-        danger: "bg-red-900 dark:bg-[#c2344d] dark:text-white dark:hover:bg-red-700",
-        cancel: "bg-gray-300 text-gray-700 dark:bg-[#f5f5fa] dark:text-dark hover:bg-gray-400 dark:hover:bg-gray-200",
+        default:
+          "bg-indigo-700 dark:bg-indigo-600 dark:text-white dark:hover:bg-indigo-700",
+        danger:
+          "bg-red-700 dark:bg-[#c2344d] dark:text-white dark:hover:bg-red-700",
+        cancel:
+          "bg-gray-300 text-gray-700 dark:bg-[#f5f5fa] dark:text-dark hover:bg-gray-400 dark:hover:bg-gray-200",
 
         // ** OUTLINE
         outline:
@@ -36,9 +39,11 @@ interface IProps
     VariantProps<typeof buttonVariants> {
   children: ReactNode;
   isLoading?: boolean;
+  type?: "submit" | "button" | "reset";
 }
 
 const Button = ({
+  type,
   variant,
   size,
   fullWidth,
@@ -49,6 +54,7 @@ const Button = ({
 }: IProps) => {
   return (
     <button
+      type={type}
       className={cn(buttonVariants({ variant, size, fullWidth, className }))}
       {...props}
       disabled={isLoading}
