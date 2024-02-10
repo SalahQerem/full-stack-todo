@@ -21,7 +21,7 @@ const TodoList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [todoToEdit, setTodoToEdit] = useState(defualtTodo);
+  const [todoToEdit, setTodoToEdit] = useState<ITodo>(defualtTodo);
   const [todoToAdd, setTodoToAdd] = useState({
     title:"",
     description:"",
@@ -133,11 +133,12 @@ const TodoList = () => {
 
   const addSubmitHandler = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+    const {title, description} = todoToAdd;
     setIsAdding(true);
     try {
       const { status } = await axiosInstance.post(
         `/todos`,
-        { data: { ...todoToAdd } },
+        { data: { title, description, user: [userData.user.id]} },
         {
           headers: {
             Authorization: `Bearer ${userData.jwt}`,
@@ -242,7 +243,7 @@ const TodoList = () => {
           />
           <div className="flex items-center justify-start space-x-3">
             <Button isLoading={isUpdating}>Update</Button>
-            <Button variant={"cancel"} onClick={closeEditModal}>
+            <Button type="submit" variant={"cancel"} onClick={closeEditModal}>
               Cancel
             </Button>
           </div>
@@ -268,7 +269,7 @@ const TodoList = () => {
           />
           <div className="flex items-center justify-start space-x-3">
             <Button isLoading={isAdding}>Add</Button>
-            <Button variant={"cancel"} onClick={closeAddModal}>
+            <Button type="submit" variant={"cancel"} onClick={closeAddModal}>
               Cancel
             </Button>
           </div>
